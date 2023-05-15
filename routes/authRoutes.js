@@ -31,7 +31,7 @@ router.patch('/resetpassword/:id', authController.resetpassword_patch);
 router.get('/signup', authController.signup_get);
 router.get('/about', authController.about_get);
 router.get('/faq', authController.faq_get);
-
+router.get('/station', authController.station_get);
 
 
 router.post('/signup', authController.signup_post);
