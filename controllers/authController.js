@@ -245,12 +245,7 @@ const signup_post = async (req, res) => {
 
             //if not exists then save the user in the database
             user.save().then(async (result) => {
-                // sendVerifyMail(req.body.fullname, req.body.email, result._id, req.body.role);
-                const sendMail = await sendVerifyMail(req.body.fullname, req.body.email, result._id, req.body.role, req);
-                if (req.body.role === 'cadet')
-                    res.status(200).render('login', { err: 'Please ask you manager to confirm your account.' });
-                else
-                    res.status(200).render('login', { err: 'Please verify your email to log in successfully.' });
+                res.status(200).render('login', { err: 'Account created successfully' });
             }).catch((err) => {
                 console.log(err);
             }
@@ -1816,7 +1811,7 @@ const logout_get = (req, res) => {
 const station_get = async (req,res) => {
     try {
         const stations = await Station.find();
-        res.render('station',{stations:stations});
+        res.render('station',{stations:stations,err:undefined});
     } catch (error) {
         res.status(404).render('404', { err: 'station_get error' });
     }

@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const stationSchema = new Schema({
 
-    stationname: {
+    station: {
         type: String,
         required: true
     },
@@ -18,7 +18,7 @@ const stationSchema = new Schema({
         required: true
     },
 
-    pnr: {
+    trainnumber: {
         type: Number,
         required: true
     },
