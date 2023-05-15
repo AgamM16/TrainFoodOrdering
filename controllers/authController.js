@@ -6,7 +6,7 @@ const Feedback = require('../models/feedback');
 const Payment = require('../models/payment');
 const Paymenthistory = require('../models/paymenthistory');
 const Managercheck = require('../models/managercheck');
-
+const Station= require('../models/station');
 
 
 
@@ -1812,6 +1812,15 @@ const logout_get = (req, res) => {
     res.cookie('jwt', '', { maxAge: 1 });
     res.render('home');
 }
+
+const station_get = async (req,res) => {
+    try {
+        const stations = await Station.find();
+        res.render('station',{stations:stations});
+    } catch (error) {
+        res.status(404).render('404', { err: 'station_get error' });
+    }
+}
 module.exports = {
     login_get,
     login_post,
@@ -1884,7 +1893,8 @@ module.exports = {
 
     verifyMail,
     sendVerifyMail,
-    logout_get
+    logout_get,
+    station_get
 
 
 };

@@ -28,13 +28,7 @@ app.use(morgan('dev'));
 app.use(methodoverride('_method'));
 app.use(cookieParser());
 
-
-
-
 app.use(authRoutes);
-
-
-
 
 
 app.listen(port);
