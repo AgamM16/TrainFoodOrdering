@@ -7,29 +7,37 @@ const paymenthistorySchema = new Schema({
         type: String,
         required: true
     },
-
-    startdate: {
-        type: Date,
+    fullname: {
+        type: String,
         required: true
     },
-
-    enddate: {
-        type: Date,
-        required: true
-    },
-
-    amount: {
+    trainnumber: {
         type: Number,
         required: true
     },
-
-    role: {
+    station : {
         type: String,
-        default: 'customer',
-        enum: ['customer']
+        default: "NA"
+        // required: false 
+    },
+    foodtime: {
+        type: String,
+        required: true,
+        enum: ['breakfast', 'lunch', 'dinner']
+    },
+    compartment: {
+        type: String,
+        required: true,
+    },
+    deliverytype: {
+        type: String,
+        required: true,
+        enum: ['normal', 'speed']
+    },
+    date : {
+        type: Date,
+        default: Date.now
     }
-
-
 });
 
 const Paymenthistory = mongoose.model('Paymenthistory', paymenthistorySchema);

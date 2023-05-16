@@ -98,17 +98,23 @@
                             <table class="table text-center table-hover border">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Amount</th>
-                                        <th scope="col">start date</th>
-                                        <th scope="col">end date</th>
+                                        <th scope="col">Billing name</th>
+                                        <th scope="col">Food-time</th>
+                                        <th scope="col">Date</th>                                        
+                                        <th scope="col">Train number</th>
+                                        <th scope="col">Station</th>
+                                        <th scope="col">Delivery type</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                   <%for (const i of paymenthistory){%>
                                     <tr>
-                                        <td scope="col"><%=i.amount%></td>
-                                        <td scope="col"><%=i.startdate.toISOString().slice(0,10)%></td>
-                                        <td scope="col"><%=i.enddate.toISOString().slice(0,10)%></td>
+                                        <td scope="col"><%=i.fullname%></td>
+                                        <td scope="col"><%=i.foodtime%></td>
+                                        <td scope="col"><%=i.date.toISOString().slice(0,10)%></td>
+                                        <td scope="col"><%=i.trainnumber%></td>
+                                        <td scope="col"><%=i.station%></td>
+                                        <td scope="col"><%=i.deliverytype%></td>
                                     </tr>
                                     <%}%>
                                     

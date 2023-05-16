@@ -43,6 +43,8 @@ router.get('/customer/:username/feedback', requireAuth, authController.customer_
 router.post('/customer/:username/feedback', requireAuth, authController.customer_feedback_post);
 
 router.get('/customer/:username/foodorder', requireAuth, authController.customer_foodorder_get);
+router.post('/customer/:username/foodordernormal', requireAuth, authController.customer_foodordernormal_post);
+router.post('/customer/:username/foodorderspeed', requireAuth, authController.customer_foodorderspeed_post);
 
 router.get('/customer/:username/paymenthistory', requireAuth, authController.customer_paymenthistory_get);
 
@@ -86,6 +88,9 @@ router.post('/manager/:username/viewpaymenthistorygraph', requireAuth, authContr
 
 router.get('/manager/:username/viewpaymenthistory',requireAuth, authController.manager_viewpaymenthistory_get);
 router.post('/manager/:username/viewpaymenthistory',requireAuth, authController.manager_viewpaymenthistory_post);
+
+router.get('/manager/:username/addstation', requireAuth, authController.manager_addstation_get);
+router.post('/manager/:username/addstation', requireAuth, authController.manager_addstation_post);
 
 router.get('/cadet/:username/view' , requireAuth, authController.cadet_viewprofile_get);
 router.get('/cadet/:username/changepassword', requireAuth, authController.cadet_changepassword_get);
