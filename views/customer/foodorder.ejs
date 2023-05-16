@@ -1,223 +1,390 @@
 <%- include('../partials/header_customer') %>
 
 
-  <div id="wrapper">
+    <div id="wrapper">
 
-    <%- include('../partials/nav_home_customer') %>
-
-
-      <div class="container">
+        <%- include('../partials/nav_home_customer') %>
 
 
-        <div class="row mb-5">
-          <div class="col-12 col-lg-3">
-            <div class="list-group text-center make-sticky ">
-        
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <div class="profile my-4 table-striped-columns">
-                                <div class="mb-3"><img src="/photos/person_logo.svg" alt="person"
-                                        width="20%"></div>
-                                <div class="fs-3"><%= customer.fullname%></div>
-                                <div class="fs-5">Customer</div>
-                            </div>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><a href="/customer/<%= customer.username%>"
-                                    class="list-group-item list-group-item-action">Home</a></td>
-                        </tr>
-                        <tr>
-                            <td><a href="/customer/<%= customer.username%>/view"
-                                    class="list-group-item list-group-item-action">View
-                                    profile</a></td>
-                        </tr>
-                        <tr >
-                            <td><a href="/customer/<%= customer.username%>/edit"
-                                    class="list-group-item list-group-item-action">Edit
-                                    Profile</a></td>
-                        </tr>
-                        <tr>
-                            <td><a href="/customer/<%= customer.username%>/changepassword"
-                                    class="list-group-item list-group-item-action">Change
-                                    password</a></td>
-                        </tr>
-                        <tr class="table-active">
-                            <td><a href="/customer/<%= customer.username%>/foodorder"
-                                class="list-group-item list-group-item-action">Food Order</a></td>
-                        </tr>
-                        <tr>
-                            <td><a href="/customer/<%= customer.username%>/paymenthistory"
-                                    class="list-group-item list-group-item-action">Payment History</a></td>
-                        </tr>
-                        <tr >
-                            <td><a href="/customer/<%= customer.username%>/feedback"
-                                    class="list-group-item list-group-item-action">Feedback</a></td>
-                        </tr>
-                    </tbody>
-                </table>
-        
-        
-        
-            </div>
-        </div>
+            <div class="container">
 
-                    <div class="col-1 col-lg-0"></div>
-                    <% if(err)  {%>
 
-                        <% if(err.includes("Success") || err.includes("success") || err.includes("Successfully") || err.includes("successfully") || err.includes("Successfull") || err.includes("successfull") )  {%>
-                
-                            <div class="container col-md-6 col-xl-4 px-2 rounded-1">
-                                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                    <%=err %>
-                                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                </div>
-                              </div>
-                              <% } else { %>
-                
-                
-                    <div class="container col-md-6 col-xl-4 px-2 rounded-1">
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <%=err %>
-                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                      </div>
-                      <% } %>
-                      <% } %>
-                    <div class="col-12 col-lg-6 mt-5">
+                <div class="row mb-5">
+                    <div class="col-12 col-lg-3">
+                        <div class="list-group text-center make-sticky ">
 
-                       
-                        <div class="container mb-5" >
-                            <div class="accordion" id="accordionExample">
-                              <div class="accordion-item">
-                                <h2 class="accordion-header">
-                                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
-                                    aria-expanded="true" aria-controls="collapseOne">
-                                    On-station Food Delivery
-                                  </button>
-                                </h2>
-                                <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-                                  <div class="accordion-body">
-                                    <div class="row row-cols-1 row-cols-md-3 g-4">
-                                        <div class="border rounded-5 text-center">
-                                            <div class="text-center mb-5 text-dark">Fill the details mentioned.</div>
-
-                                        <form action="/customer/<%= customer.username%>/foodorderstation" method="post">
-
-                                            <div class="row">
-                                              <div class="col-12 col-sm-6">
-                                                <div class="form-floating mb-3">
-                                                  <input type="text" class="form-control" id="fullname" name="fullname"
-                                                    value="<%= customer.fullname%>" required>
-                                                  <label for="fullname">Recipant's Full Name</label>
-                                                </div>
-                                              </div>
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <div class="profile my-4 table-striped-columns">
+                                            <div class="mb-3"><img src="/photos/person_logo.svg" alt="person"
+                                                    width="20%"></div>
+                                            <div class="fs-3">
+                                                <%= customer.fullname%>
                                             </div>
-                            
-                                            <div class="row">
-                                              <div class="col-12 col-sm-6">
-                                                <div class="form-floating mb-3">
-                                                  <input type="tel" class="form-control" id="phone-number" name="phone" value="<%= customer.phone%>"
-                                                    pattern="[0-9]{10}" required>
-                                                  <label for="phone-number">Phone number</label>
-                                                </div>
-                                              </div>
-                                              <div class="col-12 col-sm-6">
-                                                <div class="form-floating mb-3">
-                                                  <input type="email" class="form-control" id="email" name="email" value="<%= customer.email%>"
-                                                    disabled>
-                                                  <label for="email">Email</label>
-                                                </div>
-                                              </div>
-                                            </div>
-                            
-                                            <div class="row">
-                                              <div class="col-12 col-sm-4">
-                                                <div class="form-floating mb-4">
-                            
-                                                  <select id="role" class="form-select selectpicker" value="<%= customer.role%>" name="role"
-                                                    data-width="auto" disabled>
-                                                    <option selected value="customer"> customer </option>
-                                                    <option value="cadet"> cadet </option>
-                                                    <option value="admin"> Admin </option>
-                                                  </select>
-                                                  <label for="role">Role</label>
-                                                </div>
-                                              </div>
-                            
-                                              <div class="col-12 col-sm-4">
-                                                <div class="form-floating mb-3">
-                                                  <select id="gender" class="form-select selectpicker" placeholder="Gender" name="gender"
-                                                    data-width="auto" required>
-                            
-                                                   
-                                                    <% if(customer.gender==='male' )  {%>
-                                                      <option selected value="male"> Male </option>
-                                                      <option value="female"> Female </option>
-                                                      <option value="other"> Other </option>
-                            
-                                                      <%} else if (customer.gender=='female' ) {%>
-                                                        <option value="male"> Male </option>
-                                                        <option selected value="female"> Female </option>
-                                                        <option value="other"> Other </option>
-                                                        <% } else {%>
-                                                          <option value="male"> Male </option>
-                                                          <option value="female"> Female </option>
-                                                          <option selected value="other"> Other </option>
-                                                          <% }%>
-                                                  </select>
-                                                  <label for="gender">Gender</label>
-                                                </div>
-                                              </div>
-                            
-                                              <div class="col-12 col-sm-4">
-                                                <div class="form-floating mb-3">
-                                                  <input type="date" class="form-control" id="birthdate"
-                                                    value="<%= customer.date.toISOString().slice(0 ,10)%>" name="date" placeholder="somedate" max="9999-12-31"
-                                                    required>
-                                                  <label for="birthdate">Birth date</label>
-                                                </div>
-                                              </div>
-                                            </div>
-                            
-                            
-                                            <div class="text-center my-4 text-center">
-                                              <button class="btn btn-primary px-3" type="submit">Submit</button>
-                                          </div>
-                            
-                                          </form>
-                
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-
-
-                              <div class="accordion-item">
-                                <h2 class="accordion-header">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                      data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                      Speed Drone Food Delivery
-                                    </button>
-                                  </h2>
-                                <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                                    <div class="accordion-body">
-                                        <div class="row row-cols-1 row-cols-md-3 g-4">
-                                                                    
-                    
+                                            <div class="fs-5">Customer</div>
                                         </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><a href="/customer/<%= customer.username%>"
+                                                class="list-group-item list-group-item-action">Home</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="/customer/<%= customer.username%>/view"
+                                                class="list-group-item list-group-item-action">View
+                                                profile</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="/customer/<%= customer.username%>/edit"
+                                                class="list-group-item list-group-item-action">Edit
+                                                Profile</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="/customer/<%= customer.username%>/changepassword"
+                                                class="list-group-item list-group-item-action">Change
+                                                password</a></td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <td><a href="/customer/<%= customer.username%>/foodorder"
+                                                class="list-group-item list-group-item-action">Food Order</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="/customer/<%= customer.username%>/paymenthistory"
+                                                class="list-group-item list-group-item-action">Payment History</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="/customer/<%= customer.username%>/feedback"
+                                                class="list-group-item list-group-item-action">Feedback</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-
-
                     </div>
+
                     <div class="col-1 col-lg-0"></div>
+                    
+                                        <div class="col-12 col-lg-6 mt-5">
+                                            <% if(err) {%>
+
+                                                <% if(err.includes("Success") || err.includes("success") || err.includes("Successfully") ||
+                                                    err.includes("successfully") || err.includes("Successfull") || err.includes("successfull") )
+                                                    {%>
+                        
+                                                    <div class="container col-md-6 col-xl-4 px-2 rounded-1">
+                                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                            <%=err %>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                                    aria-label="Close"></button>
+                                                        </div>
+                                                    </div>
+                                                    <% } else { %>
+                        
+                        
+                                                        <div class="container col-md-6 col-xl-4 px-2 rounded-1">
+                                                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                                <%=err %>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                                        aria-label="Close"></button>
+                                                            </div>
+                                                        </div>
+                                                        <% } %>
+                                                            <% } %>
+                                            <div class="container mb-5">
+                                                <div class="accordion" id="accordionExample">
+                                                    <div class="accordion-item">
+                                                        <h2 class="accordion-header">
+                                                            <button class="accordion-button" type="button"
+                                                                data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                                                                aria-expanded="true" aria-controls="collapseOne">
+                                                                On-station Food Delivery
+                                                            </button>
+                                                        </h2>
+                                                        <div id="collapseOne" class="accordion-collapse collapse show"
+                                                            data-bs-parent="#accordionExample">
+                                                            <div class="accordion-body">
+                                                                <div class="row row-cols-1 row-cols-md-3 g-4">
+                                                                    <div class="col-12 col-lg-12 my-5">
+                                                                        <div
+                                                                            class="container border rounded-5 text-center">
+
+                                                                            <div
+                                                                                class="text-center fs-2 mt-4 text-dark">
+                                                                                Order Food Here!</div>
+                                                                            <div class="text-center mb-5 text-dark">Fill
+                                                                                the details mentioned.</div>
+
+
+
+                                                                            <form
+                                                                                action="/customer/<%= customer.username%>/foodordernormal"
+                                                                                method="post">
+
+                                                                                <div class="row">
+                                                                                    <div class="col-12 col-sm-12">
+                                                                                        <div class="form-floating mb-3">
+                                                                                            <input type="text"
+                                                                                                class="form-control"
+                                                                                                id="fullname"
+                                                                                                name="fullname"
+                                                                                                value="<%= customer.fullname%>"
+                                                                                                required>
+                                                                                            <label
+                                                                                                for="fullname">Billing
+                                                                                                name</label>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                </div>
+
+                                                                                <div class="row">
+                                                                                    <div class="col-12 col-sm-4">
+                                                                                        <div class="form-floating mb-3">
+                                                                                            <input type="tel"
+                                                                                                class="form-control"
+                                                                                                id="phone-number"
+                                                                                                name="phone"
+                                                                                                value="<%= customer.phone%>"
+                                                                                                pattern="[0-9]{10}"
+                                                                                                required>
+                                                                                            <label
+                                                                                                for="phone-number">Phone
+                                                                                                number</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-12 col-sm-4">
+                                                                                        <div class="form-floating mb-3">
+                                                                                            <input type="number"
+                                                                                                class="form-control"
+                                                                                                id="trainnumber"
+                                                                                                name="trainnumber"
+                                                                                                value="12345"
+                                                                                                min="10000" max="99999"
+                                                                                                required>
+                                                                                            <label
+                                                                                                for="trainnumber">Train-number</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-12 col-sm-4">
+                                                                                        <div class="form-floating mb-3">
+                                                                                            <input type="text"
+                                                                                                class="form-control"
+                                                                                                id="station"
+                                                                                                name="station"
+                                                                                                value="station name here"
+                                                                                                required>
+                                                                                            <label for="station">Station
+                                                                                                name</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="row">
+                                                                                    <div class="col-12 col-sm-4">
+                                                                                        <div class="form-floating mb-3">
+                                                                                            <input type="text"
+                                                                                                class="form-control"
+                                                                                                id="compartment"
+                                                                                                name="compartment"
+                                                                                                value="D8" maxlength="2"
+                                                                                                required>
+                                                                                            <label
+                                                                                                for="compartment">Compartment
+                                                                                                number</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-12 col-sm-8">
+                                                                                        <div class="form-floating mb-4">
+
+                                                                                            <select id="foodtime"
+                                                                                                class="form-select selectpicker"
+                                                                                                name="foodtime"
+                                                                                                data-width="auto"
+                                                                                                required>
+                                                                                                <option selected
+                                                                                                    value="breakfast">
+                                                                                                    Break-fast: &#x20B9;
+                                                                                                    100/-
+                                                                                                </option>
+                                                                                                <option value="lunch">
+                                                                                                    Lunch: &#x20B9;
+                                                                                                    200/- </option>
+                                                                                                <option value="dinner">
+                                                                                                    Dinner: &#x20B9;
+                                                                                                    250/- </option>
+                                                                                            </select>
+                                                                                            <label for="foodtime">Meal
+                                                                                                time</label>
+                                                                                        </div>
+                                                                                    </div>
+
+
+
+
+                                                                                    <div
+                                                                                        class="text-center my-4 text-center">
+                                                                                        <button
+                                                                                            class="btn btn-primary px-3"
+                                                                                            type="submit">Order
+                                                                                            Now</button>
+                                                                                    </div>
+
+                                                                            </form>
+
+                                                                        </div>
+
+                                                                        <div class="col-1 col-lg-0"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="accordion-item">
+                                                        <h2 class="accordion-header">
+                                                            <button class="accordion-button collapsed" type="button"
+                                                                data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+                                                                aria-expanded="false" aria-controls="collapseTwo">
+                                                                Speed Drone Food Delivery
+                                                            </button>
+                                                        </h2>
+                                                        <div id="collapseTwo" class="accordion-collapse collapse"
+                                                            data-bs-parent="#accordionExample">
+                                                            <div class="accordion-body">
+                                                                <div class="row row-cols-1 row-cols-md-3 g-4">
+
+                                                                    <div class="col-12 col-lg-12 my-5">
+                                                                        <div
+                                                                            class="container border rounded-5 text-center">
+
+                                                                            <div
+                                                                                class="text-center fs-2 mt-4 text-dark">
+                                                                                Order Food Here!</div>
+                                                                            <div class="text-center mb-5 text-dark">Fill
+                                                                                the details mentioned.</div>
+
+
+
+                                                                            <form
+                                                                                action="/customer/<%= customer.username%>/foodorderspeed"
+                                                                                method="post">
+
+                                                                                <div class="row">
+                                                                                    <div class="col-12 col-sm-12">
+                                                                                        <div class="form-floating mb-3">
+                                                                                            <input type="text"
+                                                                                                class="form-control"
+                                                                                                id="fullname"
+                                                                                                name="fullname"
+                                                                                                value="<%= customer.fullname%>"
+                                                                                                required>
+                                                                                            <label
+                                                                                                for="fullname">Billing
+                                                                                                name</label>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                </div>
+
+                                                                                <div class="row">
+                                                                                    <div class="col-12 col-sm-6">
+                                                                                        <div class="form-floating mb-3">
+                                                                                            <input type="tel"
+                                                                                                class="form-control"
+                                                                                                id="phone-number"
+                                                                                                name="phone"
+                                                                                                value="<%= customer.phone%>"
+                                                                                                pattern="[0-9]{10}"
+                                                                                                required>
+                                                                                            <label
+                                                                                                for="phone-number">Phone
+                                                                                                number</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-12 col-sm-6">
+                                                                                        <div class="form-floating mb-3">
+                                                                                            <input type="number"
+                                                                                                class="form-control"
+                                                                                                id="trainnumber"
+                                                                                                name="trainnumber"
+                                                                                                value="12345"
+                                                                                                min="10000" max="99999"
+                                                                                                required>
+                                                                                            <label
+                                                                                                for="trainnumber">Train-number</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    
+                                                                                </div>
+
+                                                                                <div class="row">
+                                                                                    <div class="col-12 col-sm-4">
+                                                                                        <div class="form-floating mb-3">
+                                                                                            <input type="text"
+                                                                                                class="form-control"
+                                                                                                id="compartment"
+                                                                                                name="compartment"
+                                                                                                value="D8" maxlength="2"
+                                                                                                required>
+                                                                                            <label
+                                                                                                for="compartment">Compartment
+                                                                                                number</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-12 col-sm-8">
+                                                                                        <div class="form-floating mb-4">
+
+                                                                                            <select id="foodtime"
+                                                                                                class="form-select selectpicker"
+                                                                                                name="foodtime"
+                                                                                                data-width="auto"
+                                                                                                required>
+                                                                                                <option selected
+                                                                                                    value="breakfast">
+                                                                                                    Break-fast: &#x20B9;
+                                                                                                    200/-
+                                                                                                </option>
+                                                                                                <option value="lunch">
+                                                                                                    Lunch: &#x20B9;
+                                                                                                    300/- </option>
+                                                                                                <option value="dinner">
+                                                                                                    Dinner: &#x20B9;
+                                                                                                    350/- </option>
+                                                                                            </select>
+                                                                                            <label for="foodtime">Meal
+                                                                                                time</label>
+                                                                                        </div>
+                                                                                    </div>
+
+
+
+
+                                                                                    <div
+                                                                                        class="text-center my-4 text-center">
+                                                                                        <button
+                                                                                            class="btn btn-primary px-3"
+                                                                                            type="submit">Order
+                                                                                            Now</button>
+                                                                                    </div>
+
+                                                                            </form>
+
+                                                                        </div>
+
+                                                                        <div class="col-1 col-lg-0"></div>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-1 col-lg-0"></div>
+                                        </div>
                 </div>
-            </div>
-    
-            <%- include('../partials/footer') %>
+                </div>
+                </div>
+                
+                <%- include('../partials/footer') %>

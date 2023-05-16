@@ -570,7 +570,7 @@ const customer_paymenthistory_get = async (req, res) => {
         const customer = await User.findOne({ username: username, role: 'customer', err: undefined });
         if (customer) {
             const found = await Paymenthistory.find({ username: customer.username }).sort({ _id: -1 });
-            console.log(found);
+            // console.log(found);
             res.render('customer/paymenthistory', { customer: customer, paymenthistory: found, err: undefined });
             // res.send(found);
         } else {
@@ -1853,7 +1853,143 @@ const add_user_get = (req, res) => {
 };
 
 
+const customer_foodordernormal_post = async (req, res) => {
+    try {
+        const username = req.params.username;
+        const customer = await User.findOne({ username: username, role: 'customer' });
+        if (customer) {
+            const entry = await Station.findOne({station: req.body.station, trainnumber: req.body.trainnumber});
+            if(entry)
+            {
+                const newPaymenthistory = new Paymenthistory({
+                    username: username,
+                    fullname: req.body.fullname,
+                    trainnumber: req.body.trainnumber,
+                    station:   req.body.station,
+                    foodtime: req.body.foodtime,
+                    compartment: req.body.compartment,
+                    deliverytype: 'normal'
+                });
+                newPaymenthistory.save().then((result) => {
+                    res.render('customer/foodorder', { customer: customer,err: "Ordered Successfully. Reaching at you in no time!" });
+                }).catch((err) => {
+                    console.log(err);
+                }
+                );
+            }
+            else
+            {
+                res.render('customer/foodorder', { customer: customer,err: "Station or Train not found!" });
+            }
+        }
+        else {
+            // res.send("Customer not found");
+            res.status(404).render('404', { err: 'Customer not found' });
+        }
+    } catch (error) {
+        // console.log(error);
+        // res.send("Customer not found");
+        res.status(404).render('404', { err: 'customer_foodordernormal_post error' });
+    }
+}
 
+const customer_foodorderspeed_post = async (req, res) => {
+    try {
+        const username = req.params.username;
+        const customer = await User.findOne({ username: username, role: 'customer' });
+        if (customer) {
+
+            //checking extra 
+            const trainnumber = req.body.trainnumber;
+            const entry = await Station.findOne({ trainnumber: trainnumber });
+            if (entry) {
+                const newPaymenthistory = new Paymenthistory({
+                    username: username,
+                    fullname: req.body.fullname,
+                    trainnumber: req.body.trainnumber,
+                    // station:   req.body.station,
+                    foodtime: req.body.foodtime,
+                    compartment: req.body.compartment,
+                    deliverytype: 'speed'
+                });
+                newPaymenthistory.save().then((result) => {
+                    res.render('customer/foodorder', { customer: customer,err: "Ordered Successfully. Reaching at you in no time!" });
+                }).catch((err) => {
+                    console.log(err);
+                }
+                );
+            }
+            else {
+                    res.render('customer/foodorder', { customer: customer,err: "Train not found!" });
+            }
+        }
+        else {
+            // res.send("Customer not found");
+            res.status(404).render('404', { err: 'Customer not found' });
+        }
+    } catch (error) {
+        // console.log(error);
+        // res.send("Customer not found");
+        res.status(404).render('404', { err: 'customer_foodorderspeed_post error' });
+    }
+}
+
+const manager_addstation_get = async (req,res) => {
+    try{
+        const username = req.params.username;
+        const manager = await User.findOne({username});
+        if(manager)
+        {
+            res.render('manager/addstation',{manager:manager,err:undefined});
+        }
+        else
+        {
+            res.status(404).render('404', { err: 'Manager not found' });
+        }
+    }
+    catch(error)
+    {
+        res.status(404).render('404', { err: 'manager_addstation_get error' });
+    }
+}
+
+const manager_addstation_post = async (req,res) => {
+    try{
+        const username = req.params.username;
+
+        const manager = await User.findOne({username});
+        if(manager)
+        {
+            const newStation = new Station({
+                station: req.body.station,
+                district: req.body.district,
+                state: req.body.state,
+                trainnumber: req.body.trainnumber
+            });
+            const found  = await Station.findOne({station:newStation.station, trainnumber:newStation.trainnumber , district:newStation.district, state:newStation.state});
+            if(found)
+            {
+                res.status(500).render('manager/addstation',{manager:manager,err:"Station already exists!"});
+            }
+            else
+            {
+                newStation.save().then((result) => {
+                    res.render('manager/addstation',{manager:manager,err:"Station added successfully!"});
+                }).catch((err) => {
+                    console.log(err);
+                }
+                );
+            }
+        }
+        else
+        {
+            res.status(404).render('404', { err: 'Manager not found' });
+        }
+    }
+    catch (error) {
+        res.status(404).render('404', { err: 'manager_addstation_post error' });
+    }
+}
 
 const logout_get = (req, res) => {
     res.cookie('jwt', '', { maxAge: 1 });
@@ -1894,6 +2030,8 @@ module.exports = {
     customer_faq_get,
     customer_station_get,
     customer_foodorder_get,
+    customer_foodordernormal_post,
+    customer_foodorderspeed_post,
 
     manager_get,
     manager_edit_get,
@@ -1926,6 +2064,8 @@ module.exports = {
     manager_about_get,
     manager_faq_get,
     manager_station_get,
+    manager_addstation_get,
+    manager_addstation_post,
     about_get,
     faq_get,
 
