@@ -300,11 +300,10 @@ const forgotpassword_post = async (req, res) => {
         const email = req.body.email;
         const user = await User.findOne({ email: email });
         if (user) {
-            const mailSend = await sendForgotPasswordMail(user.fullname, email, user._id, req);
+            // const mailSend = await sendForgotPasswordMail(user.fullname, email, user._id, req);
             // res.render('cadet/edit', { cadet: cadet });
             // res.send(cadet);
-            res.render('login', { err: 'Please check your mail to successfully reset password.' });
-        }
+            res.render('resetpassword', { user: user, err: undefined });        }
         else {
             res.status(500).render('forgotpassword', { err: 'User not found.' });
         }
