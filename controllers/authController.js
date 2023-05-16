@@ -113,6 +113,7 @@ const login_get = (req, res) => {
     const err = undefined;
     res.render('login', { title: 'Login', err });
 }
+
 const login_post = async (req, res) => {
     try {
 
@@ -190,21 +191,10 @@ const login_post = async (req, res) => {
         res.status(404).render('404', { err });
     }
 };
-// app.post('/login', async (req, res) => {
-//     const { username, password, role } = req.body;
-//     res.send({ username, password, role });
-
-//     // verify username password and role in the User database
-//     // redirect to the .ejs page according to role
-
-// });
-
 const signup_get = (req, res) => {
     const err = undefined;
     res.render('signup', { err });
 }
-
-
 
 const signup_post = async (req, res) => {
     try {
@@ -244,7 +234,7 @@ const signup_post = async (req, res) => {
             }
 
             //if not exists then save the user in the database
-            user.save().then(async (result) => {
+            user.save().then( (result) => {
                 res.status(200).render('login', { err: 'Account created successfully' });
             }).catch((err) => {
                 console.log(err);
@@ -1704,6 +1694,25 @@ const customer_faq_get = async (req, res) => {
     }
 }
 
+const customer_station_get = async (req, res) => {
+    try {
+        const username = req.params.username;
+        const customer = await User.findOne({ username: username, role: 'customer' });
+        if (customer) {
+            const stations = await Station.find();
+            res.render('customer/station', { customer: customer, stations: stations,err:undefined});
+        }
+        else {
+            // res.send("Customer not found");
+            res.status(404).render('404', { err: 'Customer not found' });
+        }
+    } catch (error) {
+        // console.log(error);  
+        // res.send("Customer not found");
+        res.status(404).render('404', { err: 'customer_station_get error' });
+    }
+}
+
 const manager_about_get = async (req, res) => {
     try {
         const username = req.params.username;
@@ -1738,6 +1747,31 @@ const manager_faq_get = async (req, res) => {
         // console.log(error);
         // res.send("Manager not found");
         res.status(404).render('404', { err: 'manager_faq_get error' });
+    }
+}
+
+const manager_station_get = async (req, res) => {
+    try {
+        const username = req.params.username;
+        console.log(username);
+        const manager = await User.findOne({ username: username, role: 'manager' });
+        // console.log(manager.username);
+        if(manager)
+        {
+            const stations = await Station.find();
+            // console.log("Hi I am Here!")
+            // console.log(manager.username);
+            res.render('manager/station', { manager: manager, stations: stations,err:undefined });
+        }
+        else 
+        {
+            res.status(404).render('404', { err: 'Manager not found' });
+        }
+
+    } catch (error) {
+        // console.log(error);
+        // res.send("Manager not found");
+        res.status(404).render('404', { err: 'manager_station_get error' });
     }
 }
 
@@ -1840,6 +1874,7 @@ module.exports = {
     customer_paymenthistory_get,
     customer_about_get,
     customer_faq_get,
+    customer_station_get,
 
     manager_get,
     manager_edit_get,
@@ -1871,6 +1906,7 @@ module.exports = {
     manager_viewpaymenthistory_post,
     manager_about_get,
     manager_faq_get,
+    manager_station_get,
     about_get,
     faq_get,
 

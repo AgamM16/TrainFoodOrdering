@@ -2,10 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const feedbackSchema = new Schema({
-    cleanliness: {
-        type: Number,
-        required: true
-    },
     service: {
         type: Number,
         required: true
