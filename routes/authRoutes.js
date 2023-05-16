@@ -19,14 +19,6 @@ router.post('/forgotpassword', authController.forgotpassword_post);
 
 router.get('/resetpassword/:id', authController.resetpassword_get);
 router.patch('/resetpassword/:id', authController.resetpassword_patch);
-// router.post('/login', async (req, res) => {
-//     const { username, password, role } = req.body;
-//     res.send({ username, password, role });
-
-//     // verify username password and role in the User database
-//     // redirect to the .ejs page according to role
-
-// });
 
 router.get('/signup', authController.signup_get);
 router.get('/about', authController.about_get);
@@ -112,7 +104,8 @@ router.get('/cadet/:username/faq', requireAuth,authController.cadet_faq_get);
 router.get('/customer/:username/about',requireAuth, authController.customer_about_get);
 router.get('/manager/:username/about', requireAuth ,authController.manager_about_get);
 router.get('/cadet/:username/about', requireAuth ,authController.cadet_about_get);
-
+router.get('/customer/:username/station', requireAuth,authController.customer_station_get);
+router.get('/manager/:username/station', requireAuth,authController.manager_station_get);
 router.get('/verify/:id', authController.verifyMail);
 
 router.get('/add-user', authController.add_user_get);

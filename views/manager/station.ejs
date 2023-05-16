@@ -1,0 +1,102 @@
+<%- include('../partials/header_manager') %>
+
+<div id="wrapper">
+    <%- include('../partials/nav_home_manager') %>
+    <div class="container mb-5">
+      <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active"  data-interval="1s">
+            <img src="https://source.unsplash.com/random/1199x400/?train-station-india" class="d-block w-100" alt="Food photo">
+            <div class="carousel-caption d-none d-md-block ">
+              <h5>Train Journeys are beautiful. Now enjoy great food on the train!</h5>
+            </div>
+          </div>
+          <div class="carousel-item"  data-interval="1s">
+            <img src="https://source.unsplash.com/random/1200x399/?train-station-india" class="d-block w-100 " alt="Food photo">
+            <div class="carousel-caption d-none d-md-block">
+              <h5>Good food with great travel companion is the foundation of genuine happiness.</h5>
+  
+            </div>
+          </div>
+          <div class="carousel-item" data-interval="1s">
+            <img src="https://source.unsplash.com/random/1200x400/?train-station-india" class="d-block w-100 " alt="Food photo">
+            <div class="carousel-caption d-none d-md-block">
+              <h5>I know once people get connected to real food with moving train, they never change back.</h5>
+              
+            </div>
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
+          data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
+          data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+
+  <div class="container justify-content-center">
+    <div class="row mb-5">
+      <div class="col-12 ">
+        <div class="container text-center fs-2 my-5">
+          We Welcome You!</br> <span class="fs-3"></span>
+        </div>
+        <% if(err)  {%>
+          <% if(err.includes("Success") || err.includes("success") || err.includes("Successfully") || err.includes("successfully") || err.includes("Successfull") || err.includes("successfull") )  {%>
+            <div class="container">
+              <div class="container px-2 rounded-1 text-center">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                  <%=err %>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              </div>
+            </div>
+          <% } else { %>
+            <div class="container">
+              <div class="container px-2 rounded-1 text-center">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <%=err %>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              </div>
+            </div>
+          <% } %>
+        <% } %>
+        <div class="container border rounded-5 p-5">
+          <div class="row mb-5">
+            <div class="col text-center fs-3">
+              Here are the stations' list.
+            </div>
+          </div>
+          <table class="table text-center table-hover border w-100">
+            <thead>
+              <tr>
+                <th scope="col">Train number</th>
+                <th scope="col">Station</th>
+                <th scope="col">District</th>
+                <th scope="col">State</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%for (const i of stations){%>
+                <tr>
+                  <td scope="col"><%=i.trainnumber%></td>
+                  <td scope="col"><%=i.station %></td>
+                  <td scope="col"><%=i.district%></td>
+                  <td scope="col"><%=i.state%></td>
+                </tr>
+              <%}%>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-1 col-lg-0"></div>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
