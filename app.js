@@ -13,7 +13,7 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
     .catch((err) => console.log(err));
 
 
-const app = express();
+const  app = express();
 const port = process.env.PORT || 3000;
 const static_path = path.join(__dirname, 'public');
 app.use(express.json());
