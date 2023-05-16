@@ -92,6 +92,14 @@ router.post('/manager/:username/viewpaymenthistory',requireAuth, authController.
 router.get('/manager/:username/addstation', requireAuth, authController.manager_addstation_get);
 router.post('/manager/:username/addstation', requireAuth, authController.manager_addstation_post);
 
+
+router.get('/manager/:username/deletestation', requireAuth, authController.manager_deletestation_get);
+router.delete('/manager/:username/deletestation', requireAuth, authController.manager_deletestation_delete);
+router.get('/manager/:username/removestation', requireAuth, authController.manager_deletestation_get);
+
+router.get('/manager/:username/viewcustomer', requireAuth, authController.manager_viewcustomer_get);
+router.post('/manager/:username/viewcustomer', requireAuth, authController.manager_viewcustomer_post);
+
 router.get('/cadet/:username/view' , requireAuth, authController.cadet_viewprofile_get);
 router.get('/cadet/:username/changepassword', requireAuth, authController.cadet_changepassword_get);
 router.patch('/cadet/:username/changepassword', requireAuth, authController.cadet_changepassword_patch);
