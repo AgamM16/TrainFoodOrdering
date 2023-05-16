@@ -1991,6 +1991,109 @@ const manager_addstation_post = async (req,res) => {
     }
 }
 
+
+const manager_deletestation_get = async (req,res) => {
+    try{
+        const username = req.params.username;
+        const manager = await User.findOne({username});
+        if(manager)
+        {
+            res.render('manager/deletestation',{manager:manager,err:undefined});
+        }
+        else
+        {
+            res.status(404).render('404', { err: 'Manager not found' });
+        }
+    }
+    catch(error)
+    {
+        res.status(404).render('404', { err: 'manager_deletestation_get error' });
+    }
+}
+
+const manager_deletestation_delete = async (req,res) => {
+    try{
+        const username = req.params.username;
+        const manager = await User.findOne({username});
+        if(manager)
+        {
+            const station = req.body.station;
+            const trainnumber = req.body.trainnumber;
+            const district = req.body.district;
+            const state = req.body.state;
+            const found  = await Station.findOne({station,trainnumber,district,state});
+            if(found)
+            {
+                await Station.findOneAndDelete({station,trainnumber,district,state});
+                res.render('manager/deletestation',{manager:manager,err:"Station deleted successfully!"});
+            }
+            else
+            {
+                res.render('manager/deletestation',{manager:manager,err:"Station not found!"});
+            }
+        }
+        else    
+        {
+            res.status(404).render('404', { err: 'Manager not found' });
+        }
+    }
+    catch(error)
+    {
+        res.status(404).render('404', { err: 'manager_deletestation_delete error' });
+    }
+}
+
+const manager_viewcustomer_get = async (req,res) => {
+    try{
+        const username = req.params.username;
+        const manager = await User.findOne({username});
+        if(manager)
+        {
+            const customers = await User.find({role:"customer"});
+            res.render('manager/viewcustomer',{manager:manager,customers:customers,err:undefined});
+        }
+        else
+        {
+            res.status(404).render('404', { err: 'Manager not found' });
+        }
+    }
+    catch(error)
+    {
+        res.status(404).render('404', { err: 'manager_viewcustomer_get error' });
+    }
+}
+
+const manager_viewcustomer_post = async (req,res) => {
+
+    try{
+        const username = req.params.username;
+        const manager = await User.findOne({username});
+        if(manager)
+        {
+            const customerUsername = req.body.username;
+            const customer = await User.findOne({username:customerUsername,role:"customer"});
+            if(customer)
+            {
+                const customers = await User.find({username:customerUsername,role:"customer"});
+                res.render('manager/viewcustomer',{manager:manager,customers,err:undefined});
+            }
+            else
+            {
+            const customers = await User.find({role:"customer"});
+            res.render('manager/viewcustomer',{manager:manager,customers:customers,err:`Customer with username "${customerUsername}" not found!`});
+        }
+    }
+        else
+        {
+            res.status(404).render('404', { err: 'Manager not found' });
+        }
+    }
+    catch(error)
+    {
+        res.status(404).render('404', { err: 'manager_viewcustomer_post error' });
+    }
+}
+
 const logout_get = (req, res) => {
     res.cookie('jwt', '', { maxAge: 1 });
     res.render('home');
@@ -2066,6 +2169,10 @@ module.exports = {
     manager_station_get,
     manager_addstation_get,
     manager_addstation_post,
+    manager_deletestation_get,
+    manager_deletestation_delete,
+    manager_viewcustomer_get,
+    manager_viewcustomer_post,
     about_get,
     faq_get,
 

@@ -127,9 +127,9 @@
               <% } %>
             <div class="container border rounded-5 text-center">
 
-              <div class="text-center fs-2 mt-4 text-dark">You can add Station here.</div>
+              <div class="text-center fs-2 mt-4 text-dark">You can remove Station here.</div>
               <div class="text-center mb-5 text-dark">Fill the details mentioned.</div>
-                  <form action="/manager/<%= manager.username%>/addstation" method="post">
+                  <form action="/manager/<%= manager.username%>/deletestation?_method=delete" method="post">
 
                     <div class="row">
                       <div class="col-12 col-sm-12">
