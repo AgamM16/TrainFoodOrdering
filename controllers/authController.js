@@ -1632,6 +1632,24 @@ const cadet_viewinventory_get = async (req, res) => {
     }
 }
 
+const customer_foodorder_get = async (req, res) => {
+    try {
+        const username = req.params.username;
+        const customer = await User.findOne({ username: username, role: 'customer' });
+        if(customer)
+        {
+            res.render('customer/foodorder', { customer: customer,err: undefined });
+        }
+        else
+        {
+            res.status(404).render('404', { err: 'Customer not exists' });
+        }
+    } catch (error) {
+        // console.log(error);
+        // res.send('An error occurred while finding the cadet.');
+        res.status(404).render('404', { err: 'customer_foodorder_get error' });
+    }
+}
 
 
 const about_get = (req, res) => {
@@ -1875,6 +1893,7 @@ module.exports = {
     customer_about_get,
     customer_faq_get,
     customer_station_get,
+    customer_foodorder_get,
 
     manager_get,
     manager_edit_get,

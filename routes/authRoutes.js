@@ -42,6 +42,8 @@ router.patch('/customer/:username/changepassword', requireAuth, authController.c
 router.get('/customer/:username/feedback', requireAuth, authController.customer_feedback_get);
 router.post('/customer/:username/feedback', requireAuth, authController.customer_feedback_post);
 
+router.get('/customer/:username/foodorder', requireAuth, authController.customer_foodorder_get);
+
 router.get('/customer/:username/paymenthistory', requireAuth, authController.customer_paymenthistory_get);
 
 router.get('/manager/:username', requireAuth, authController.manager_get);
