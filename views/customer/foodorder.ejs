@@ -139,7 +139,7 @@
                                                                                 </div>
 
                                                                                 <div class="row">
-                                                                                    <div class="col-12 col-sm-4">
+                                                                                    <div class="col-12 col-sm-12">
                                                                                         <div class="form-floating mb-3">
                                                                                             <input type="tel"
                                                                                                 class="form-control"
@@ -153,29 +153,23 @@
                                                                                                 number</label>
                                                                                         </div>
                                                                                     </div>
-                                                                                    <div class="col-12 col-sm-4">
+                                                                                    
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col-12 col-sm-12">
                                                                                         <div class="form-floating mb-3">
-                                                                                            <input type="number"
-                                                                                                class="form-control"
-                                                                                                id="trainnumber"
-                                                                                                name="trainnumber"
-                                                                                                value="12345"
-                                                                                                min="10000" max="99999"
-                                                                                                required>
-                                                                                            <label
-                                                                                                for="trainnumber">Train-number</label>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="col-12 col-sm-4">
-                                                                                        <div class="form-floating mb-3">
-                                                                                            <input type="text"
-                                                                                                class="form-control"
-                                                                                                id="station"
-                                                                                                name="station"
-                                                                                                value="station name here"
-                                                                                                required>
-                                                                                            <label for="station">Station
-                                                                                                name</label>
+                                                                                            <select class="form-select selectpicker" id="station" name="station" required>
+                                                                                                <option value="">Select station - Train Number</option>
+                                                                                            
+                                                                                                    <% for (let key of station) { %>
+                                                                                                      <option value="<%= key.station %> - <%= key.trainnumber %>">
+                                                                                                        <%= key.station %> - <%= key.trainnumber %>
+                                                                                                      </option>
+                                                                                                    <% } %>
+                                                                                                  
+                                                                                            </select>
+                                                                                            <label for="station">Station - Train Number</label>
+                                                                                            
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -303,15 +297,16 @@
                                                                                     </div>
                                                                                     <div class="col-12 col-sm-6">
                                                                                         <div class="form-floating mb-3">
-                                                                                            <input type="number"
-                                                                                                class="form-control"
-                                                                                                id="trainnumber"
-                                                                                                name="trainnumber"
-                                                                                                value="12345"
-                                                                                                min="10000" max="99999"
-                                                                                                required>
-                                                                                            <label
-                                                                                                for="trainnumber">Train-number</label>
+                                                                                            <select class="form-select selectpicker" id="trainnumber" name="trainnumber" required>
+                                                                                                <option value="">Train Number</option>
+                                                                                                <% const uniqueTrainNumbers = Array.from(new Set(station.map(key => key.trainnumber))) %>
+                                                                                                    <% for (let key of uniqueTrainNumbers) { %>
+                                                                                                      <option value="<%= key %>">
+                                                                                                        <%= key %>
+                                                                                                      </option>
+                                                                                                    <% } %>
+                                                                                            </select>
+                                                                                            <label for="trainnumber">Train Number</label>
                                                                                         </div>
                                                                                     </div>
                                                                                     

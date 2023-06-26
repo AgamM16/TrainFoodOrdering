@@ -78,10 +78,6 @@ const sendVerifyMail = async (name, email, user_id, userrole, req) => {
             mailOptions.to = process.env.MANAGER_MAIL;
             mailOptions.subject = `For verification mail for manager named ${name}`;
             mailOptions.html = `<p>Dear Manager, ${name} wants to be a manager, please click <a href="${url_}">here</a> to verify their mail</p>`;
-        } else if (userrole === 'cadet') {
-            mailOptions.to = process.env.MANAGER_MAIL;
-            mailOptions.subject = `For verification mail for cadet named ${name}`;
-            mailOptions.html = `<p>Dear Manager, ${name} wants to be a cadet, please click <a href="${url_}">here</a> to verify their mail</p>`;
         } else {
             throw new Error(`Invalid user role: ${userrole}`);
         }
@@ -165,22 +161,7 @@ const login_post = async (req, res) => {
                 };
 
             }
-            else if (role === 'cadet') {
-                const cadet = await User.findOne({ username, role });
-                const auth = await bcrypt.compare(password, cadet.password);
-
-                if (cadet && auth && cadet.role === req.body.role) {
-                    const user = await User.login(username, password, role);
-                    const token = createToken(user._id);
-                    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
-                    res.status(201).render(`${role}/index`, { cadet, err: 'You have logged in successfully.' });
-                }
-                else {
-                    const err = 'Invalid login details.';
-                    res.status(500).render('login', { err });
-                }
-
-            }
+            
         }
         else {
             const err = 'Invalid login details.';
@@ -300,10 +281,12 @@ const forgotpassword_post = async (req, res) => {
         const email = req.body.email;
         const user = await User.findOne({ email: email });
         if (user) {
-            // const mailSend = await sendForgotPasswordMail(user.fullname, email, user._id, req);
+           // const mailSend = await sendForgotPasswordMail(user.fullname, email, user._id, req);
             // res.render('cadet/edit', { cadet: cadet });
             // res.send(cadet);
-            res.render('resetpassword', { user: user, err: undefined });        }
+            res.render('resetpassword', { user: user, err: undefined });
+           // res.render('login', { err: 'Please check your mail to successfully reset password.' });
+        }
         else {
             res.status(500).render('forgotpassword', { err: 'User not found.' });
         }
@@ -1475,169 +1458,14 @@ const manager_viewpaymenthistory_post = async (req, res) => {
         res.status(404).render('404', { err: "manager_viewpaymenthistory_post error" });
     }
 }
-
-const cadet_viewprofile_get = async (req, res) => {
-    try {
-        const username = req.params.username;
-        const cadet = await User.findOne({ username: username, role: 'cadet' });
-        if (cadet) {
-            res.render('cadet/view', { cadet: cadet, err: undefined });
-        }
-        else {
-            // res.send("Cadet not found");
-            res.status(404).render('404', { err: 'Cadet not found' });
-        }
-    } catch (error) {
-        // console.log(error);
-        res.status(404).render('404', { err: 'cadet_viewprofile_get error' });
-    }
-}
-
-const cadet_changepassword_get = async (req, res) => {
-    try {
-        const username = req.params.username; // use req.params.username to get the username
-        const cadet = await User.findOne({ username: username, role: 'cadet' });
-
-        if (cadet) {
-
-            res.render('cadet/changepassword', { cadet: cadet, err: undefined });
-            // res.send(cadet);
-        } else {
-            // res.send('No cadet found.');
-            res.status(404).render('404', { err: 'No cadet found.' });
-        }
-    } catch (error) {
-        // console.log(error);
-        res.status(404).render('404', { err: 'cadet_changepassword_get error' });
-    }
-}
-
-const cadet_changepassword_patch = async (req, res) => {
-    try {
-        const { username } = req.params; // use req.params.username to get the username
-        let cadet = await User.findOne({ username: username, role: 'cadet' });
-        // cadet.password = req.body.password;
-        // const cpassword = req.body.cpassword;
-        if (cadet) {
-            if (req.body.password === req.body.cpassword && req.body.cpassword) {
-
-
-                cadet.password = await bcrypt.hash(req.body.password, 12);
-                User.updateOne({ username: username },
-                    { $set: { password: cadet.password }, validate: true }).then((result) => {
-                        console.log(result);
-                        res.render('cadet/index', { cadet: cadet, err: 'Password updated Successfully.' });
-                    }).catch((err) => {
-                        // console.log(err);
-                        // res.send(err);
-                        res.status(404).render('404', { err: "password not updating" });
-                    });
-            }
-            else {
-                // res.send("Password are not matching");
-                res.status(500).render('cadet/changePassword', { cadet: cadet, err: "Password are not matching." });
-            }
-        }
-        else {
-            // res.send('No cadet found.');
-            res.status(404).render('404', { err: 'No cadet found.' });
-        }
-
-    } catch (error) {
-        // console.log(error);
-        // res.send('An error occurred while finding the cadet.');
-        res.status(404).render('404', { err: 'cadet_changepassword_patch error' });
-    }
-}
-
-
-
-const cadet_get = async (req, res) => {
-    try {
-        const username = req.params.username; // use req.params.username to get the username
-        const cadet = await User.findOne({ username: username, role: 'cadet' });
-        // console.log(cadet);
-
-        res.render('cadet/index', { cadet: cadet, err: undefined });
-
-    } catch (error) {
-        // console.log(error);
-        // res.send('An error occurred while finding the cadet.');
-        res.status(404).render('404', { err: 'cadet_get error' });
-    }
-}
-
-const cadet_edit_get = async (req, res) => {
-    try {
-        const { username } = req.params;
-        const cadet = await User.findOne({ username: username, role: 'cadet' });
-        res.render('cadet/edit', { cadet: cadet, err: undefined });
-        // res.send(cadet);
-
-    } catch (error) {
-        // res.send("Unable to find cadet");
-        res.status(404).render('404', { err: 'Cadet not exists' });
-    }
-}
-
-const cadet_edit_patch = async (req, res) => {
-    try {
-        const { username } = req.params; // use req.params.username to get the username
-        const cadet = await User.findOne({ username: username, role: 'cadet' });
-
-        if (cadet) {
-            // cadet.password = req.body.password;
-            cadet.fullname = req.body.fullname;
-            cadet.date = req.body.date;
-            cadet.phone = req.body.phone;
-            cadet.gender = req.body.gender;
-            User.updateOne({ username: username, role: 'cadet' },
-                { $set: { fullname: req.body.fullname, date: req.body.date, phone: req.body.phone, gender: req.body.gender }, validate: true })
-                .then((result) => {
-                    res.render('cadet/index', { cadet: cadet, err: 'Profile updated Successfully.' });
-                })
-                .catch((err) => {
-                    // console.log(err);
-                    // res.send('cannot update');
-                    res.status(404).render('404', { err: 'cadet info not updated' });
-                }
-                );
-        }
-        else {
-            // res.send("No cadet found");
-            res.status(404).render('404', { err: 'Cadet not exists' });
-        }
-
-
-    } catch (error) {
-        // console.log(error);
-        // res.send('An error occurred while finding the cadet.');
-        res.status(404).render('404', { err: 'cadet_edit_patch error' });
-    }
-}
-
-const cadet_viewinventory_get = async (req, res) => {
-    try {
-        const username = req.params.username;
-        const cadet = await User.findOne({ username: username, role: 'cadet' });
-        const inventory = await Inventory.find();
-
-        res.render('cadet/viewinventory', { cadet: cadet, inventory: inventory, err: undefined });
-
-    } catch (error) {
-        // console.log(error);
-        // res.send('An error occurred while finding the cadet.');
-        res.status(404).render('404', { err: 'cadet_viewinventory_get error' });
-    }
-}
-
 const customer_foodorder_get = async (req, res) => {
     try {
         const username = req.params.username;
         const customer = await User.findOne({ username: username, role: 'customer' });
         if(customer)
         {
-            res.render('customer/foodorder', { customer: customer,err: undefined });
+            const station=await Station.find();
+            res.render('customer/foodorder', { customer: customer,err: undefined,station });
         }
         else
         {
@@ -1791,86 +1619,33 @@ const manager_station_get = async (req, res) => {
         res.status(404).render('404', { err: 'manager_station_get error' });
     }
 }
-
-const cadet_about_get = async (req, res) => {
-    try {
-        const username = req.params.username;
-        const cadet = await User.findOne({ username: username, role: 'cadet' });
-        if (cadet) {
-            res.render('cadet/about', { cadet: cadet });
-        }
-        else {
-            // res.send('An error occurred while finding the cadet.');
-            res.status(404).render('404', { err: 'An error occurred while finding the cadet.' });
-        }
-    } catch (error) {
-        // console.log(error);
-        // res.send('An error occurred while finding the cadet.');
-        res.status(404).render('404', { err: 'cadet_about_get error' });
-    }
-}
-
-
-const cadet_faq_get = async (req, res) => {
-    try {
-        const username = req.params.username;
-        const cadet = await User.findOne({ username: username, role: 'cadet' });
-        if (cadet) {
-            res.render('cadet/faq', { cadet: cadet });
-        }
-        else {
-            // res.send("Cadet not found");
-            res.status(404).render('404', { err: 'Cadet not found' });
-        }
-    } catch (error) {
-        // console.log(error);
-        // res.send("Cadet not found");
-        res.status(404).render('404', { err: 'cadet_faq_get error' });
-    }
-}
-
-const add_user_get = (req, res) => {
-    const user = new User({
-        fullname: 'Gaurang',
-        username: 'gaurang',
-        email: 'gaurangsheth@bjfjfjfb',
-        password: 'fjbwejfefefj',
-        phone: '9327913232',
-        role: 'cadet',
-        gender: 'female',
-        date: '2020-12-12',
-    });
-    user.save()
-        .then((result) => {
-            res.send(result);
-        })
-        .catch((err) => {
-            console.log(err);
-        }
-        );
-
-};
-
-
 const customer_foodordernormal_post = async (req, res) => {
     try {
         const username = req.params.username;
         const customer = await User.findOne({ username: username, role: 'customer' });
+
         if (customer) {
-            const entry = await Station.findOne({station: req.body.station, trainnumber: req.body.trainnumber});
+            const selectedOption = req.body.station;
+            const values = selectedOption.split(' - ');
+            const selectedStation = values[0];
+            const selectedTrainNumber = values[1];
+            const entry = await Station.findOne({station: selectedStation, trainnumber: selectedTrainNumber});
+            
             if(entry)
             {
+                
                 const newPaymenthistory = new Paymenthistory({
                     username: username,
                     fullname: req.body.fullname,
-                    trainnumber: req.body.trainnumber,
-                    station:   req.body.station,
+                    trainnumber: selectedTrainNumber,
+                    station:   selectedStation,
                     foodtime: req.body.foodtime,
                     compartment: req.body.compartment,
                     deliverytype: 'normal'
                 });
-                newPaymenthistory.save().then((result) => {
-                    res.render('customer/foodorder', { customer: customer,err: "Ordered Successfully. Reaching at you in no time!" });
+                newPaymenthistory.save().then(async (result) => {
+                    const station = await Station.find();
+                    res.render('customer/foodorder', { customer: customer,err: "Ordered Successfully. Reaching at you in no time!" ,station});
                 }).catch((err) => {
                     console.log(err);
                 }
@@ -1878,7 +1653,8 @@ const customer_foodordernormal_post = async (req, res) => {
             }
             else
             {
-                res.render('customer/foodorder', { customer: customer,err: "Station or Train not found!" });
+                const station = await Station.find();
+                res.render('customer/foodorder', { customer: customer,err: "Station or Train not found!",station });
             }
         }
         else {
@@ -1896,6 +1672,7 @@ const customer_foodorderspeed_post = async (req, res) => {
     try {
         const username = req.params.username;
         const customer = await User.findOne({ username: username, role: 'customer' });
+        const station = await Station.find();
         if (customer) {
 
             //checking extra 
@@ -1912,14 +1689,14 @@ const customer_foodorderspeed_post = async (req, res) => {
                     deliverytype: 'speed'
                 });
                 newPaymenthistory.save().then((result) => {
-                    res.render('customer/foodorder', { customer: customer,err: "Ordered Successfully. Reaching at you in no time!" });
+                    res.render('customer/foodorder', { customer: customer,err: "Ordered Successfully. Reaching at you in no time!" ,station});
                 }).catch((err) => {
                     console.log(err);
                 }
                 );
             }
             else {
-                    res.render('customer/foodorder', { customer: customer,err: "Train not found!" });
+                    res.render('customer/foodorder', { customer: customer,err: "Train not found!" ,station});
             }
         }
         else {
@@ -2119,7 +1896,7 @@ module.exports = {
     signup_get,
     signup_post,
     customer_get,
-    add_user_get,
+    
     customer_view_get,
     customer_changepassword_get,
     customer_edit_get,
@@ -2175,18 +1952,7 @@ module.exports = {
     about_get,
     faq_get,
 
-
-    cadet_viewprofile_get,
-    cadet_changepassword_get,
-    cadet_changepassword_patch,
-    cadet_get,
-    cadet_edit_get,
-    cadet_edit_patch,
-    cadet_viewinventory_get,
-    cadet_about_get,
-    cadet_faq_get,
-
-
+    
     verifyMail,
     sendVerifyMail,
     logout_get,

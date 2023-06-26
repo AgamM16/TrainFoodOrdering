@@ -100,30 +100,15 @@ router.get('/manager/:username/removestation', requireAuth, authController.manag
 router.get('/manager/:username/viewcustomer', requireAuth, authController.manager_viewcustomer_get);
 router.post('/manager/:username/viewcustomer', requireAuth, authController.manager_viewcustomer_post);
 
-router.get('/cadet/:username/view' , requireAuth, authController.cadet_viewprofile_get);
-router.get('/cadet/:username/changepassword', requireAuth, authController.cadet_changepassword_get);
-router.patch('/cadet/:username/changepassword', requireAuth, authController.cadet_changepassword_patch);
-
-router.get('/cadet/:username', requireAuth, authController.cadet_get);
-router.get('/cadet/:username/edit', requireAuth, authController.cadet_edit_get);
-router.patch('/cadet/:username/edit', requireAuth, authController.cadet_edit_patch);
-
-router.get('/cadet/:username/viewinventory', requireAuth, authController.cadet_viewinventory_get);
-
-
-
-
 router.get('/customer/:username/faq', requireAuth,authController.customer_faq_get);
 router.get('/manager/:username/faq', requireAuth,authController.manager_faq_get);
-router.get('/cadet/:username/faq', requireAuth,authController.cadet_faq_get);
 router.get('/customer/:username/about',requireAuth, authController.customer_about_get);
 router.get('/manager/:username/about', requireAuth ,authController.manager_about_get);
-router.get('/cadet/:username/about', requireAuth ,authController.cadet_about_get);
 router.get('/customer/:username/station', requireAuth,authController.customer_station_get);
 router.get('/manager/:username/station', requireAuth,authController.manager_station_get);
 router.get('/verify/:id', authController.verifyMail);
 
-router.get('/add-user', authController.add_user_get);
+
 router.post('/home', authController.logout_get);
 router.get('/', (req, res) => {
     res.render('home', { title: 'Home' });
